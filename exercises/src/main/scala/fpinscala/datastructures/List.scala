@@ -134,10 +134,20 @@ object List { // `List` companion object. Contains functions for creating and wo
     map(zs)((xy:(Int,Int)) => xy._1 + xy._2)
   }
 
-  def zipWith[A](as:List[A])(bs:List[A])(f:(A,A) => A):List[A] = {
+  def zipWith[A,B](as:List[A])(bs:List[A])(f:(A,A) => B):List[B] = {
     (as, bs) match {
       case (Cons(x,xs), Cons(y,ys)) => Cons(f(x,y), zipWith(xs)(ys)(f))
       case _ => Nil
+    }
+  }
+  def hasSubsequence[A](sup: List[A], sub:List[A]):Boolean = {
+    sup match {
+      case Nil => false
+      case Cons(x,xs) => {
+        val zs = zipWith(Cons(x,xs))(sub)((x,y) => x == y)
+        val here = foldLeft(zs, true)((b,a) => b && a)
+        here || hasSubsequence(xs, sub)
+      }
     }
   }
 }
