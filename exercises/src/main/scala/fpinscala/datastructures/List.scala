@@ -123,15 +123,21 @@ object List { // `List` companion object. Contains functions for creating and wo
   def filterWithFlatMap[A](as:List[A])(f: A => Boolean):List[A] = 
     flatMap(as)(a => if (f(a)) Cons(a,Nil) else Nil:List[A])
 
-  def zip(cs:List[Int])(ds:List[Int]):List[(Int,Int)] = 
-    (cs, ds) match {
+  def zip(as:List[Int])(bs:List[Int]):List[(Int,Int)] = 
+    (as, bs) match {
     case (Cons(x, xs), Cons(y, ys)) => Cons((x,y), zip(xs)(ys))
     case _ => Nil
   }
 
-  def ex3_22[Int](as:List[Int], bs:List[Int]):List[Int] = {
-    Nil
-//    val zs = List.zip(as)(bs)
-//    map(zs)((x,y) => x + y)
+  def ex3_22(as:List[Int], bs:List[Int]):List[Int] = {
+    val zs = List.zip(as)(bs)
+    map(zs)((xy:(Int,Int)) => xy._1 + xy._2)
+  }
+
+  def zipWith[A](as:List[A])(bs:List[A])(f:(A,A) => A):List[A] = {
+    (as, bs) match {
+      case (Cons(x,xs), Cons(y,ys)) => Cons(f(x,y), zipWith(xs)(ys)(f))
+      case _ => Nil
+    }
   }
 }
