@@ -74,7 +74,6 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(_, Nil) => Nil
       case Cons(x,xs) => Cons(x, init(xs))
   }
-
   def length[A](l: List[A]): Int = 
     foldRight(l, 0)((_,s) => 1 + s)
 
@@ -123,8 +122,8 @@ object List { // `List` companion object. Contains functions for creating and wo
   def filterWithFlatMap[A](as:List[A])(f: A => Boolean):List[A] = 
     flatMap(as)(a => if (f(a)) Cons(a,Nil) else Nil:List[A])
 
-  def zip(as:List[Int])(bs:List[Int]):List[(Int,Int)] = 
-    (as, bs) match {
+  def zip(cs:List[Int])(ds:List[Int]):List[(Int,Int)] = 
+    (cs, ds) match {
     case (Cons(x, xs), Cons(y, ys)) => Cons((x,y), zip(xs)(ys))
     case _ => Nil
   }
