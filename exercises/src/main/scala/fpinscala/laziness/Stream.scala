@@ -58,39 +58,6 @@ trait Stream[+A] {
 //  def append(s2: => Stream[A]):Stream[A] = foldRight(s2)((a,b]) => cons(a,b))
 
   def startsWith[B](s: Stream[B]): Boolean = sys.error("todo")
-
-  def mapViaUnfold[B](f: A => B):Stream[B] = 
-    unfold(this)(s => s match {
-      case Cons(x, xs) => Some((f(x()), xs()))
-      case empty => None
-    })
-
-  def takeViaUnfold(n: Int): Stream[A] = 
-    unfold((n,this))(s => s match {
-      case ((m,Cons(x, xs))) if m > 0  => Some(x(), (m-1, xs()))
-      case _ => None
-    })
-
-  def takeWhileViaUnfold(p: A => Boolean): Stream[A] = 
-    unfold(this)(s => s match {
-      case Cons(x, xs) if p(x()) => Some(x(), xs())
-      case _ => None
-    })
-
-  // contraviant nonsense
-  def zipWithViaUnfold[B,C](s2:Stream[B])(f:(A,B) => C):Stream[C] = 
-    unfold((this, s2))(s => s match {
-      case (Cons(x,xs), Cons(y,ys)) => Some((f(x(),y()), (xs(),ys())))
-      case _ => None
-    })
-
-    def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] = 
-      unfold((this, s2))(s => s match {
-        case (Empty, Empty) => None
-        case (Empty, Cons(y,ys)) => Some((None, Some(y())), (Empty, ys()))
-        case (Cons(x,xs), Empty) => Some((Some(x()), None), (xs(), Empty))
-        case (Cons(x,xs), Cons(y,ys)) => Some((Some(x()), Some(y())), (xs(), ys()))
-      })
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
@@ -138,4 +105,7 @@ object Stream {
   val fibsUsingUnfold:Stream[Int] = 
     Stream.cons(0, Stream.cons(1, fibsnUsingUnfold(0, 1)))
 
+  def mapViaUnfold[B](f: A => B):Stream[B] = 
+    unfold(this)(s => s match {
+    })
 }
