@@ -104,8 +104,4 @@ object Stream {
 
   val fibsUsingUnfold:Stream[Int] = 
     Stream.cons(0, Stream.cons(1, fibsnUsingUnfold(0, 1)))
-
-  def mapViaUnfold[B](f: A => B):Stream[B] = 
-    unfold(this)(s => s match {
-    })
 }
