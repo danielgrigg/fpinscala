@@ -87,6 +87,11 @@ object Purely {
     iter(count, List(), rng)   
   }
 
+  def intsViaSequence(count:Int)(rng:RNG): (List[Int], RNG) = {
+    val f = sequence(List.fill(count)((r:RNG) => r.nextInt))
+    f(rng) 
+  }
+
 
   def nonNegativeEven: Rand[Int] = map(nonNegativeInt)(i => i - i % 2)
 
